@@ -6,17 +6,48 @@ public class TriggerDialog : MonoBehaviour
     {
         [SerializeField] private bool triggerActive = false;
  
-        public void OnTriggerEnter(Collider other)
+        public GameObject Player;
+        public GameObject Panel;
+
+        public void togglePanel()
         {
-            if (other.CompareTag("Player"))
+            if (Panel != null)
+            {
+                bool isActive = Panel.activeSelf;
+                if (!isActive)
+                {
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
+                } else
+                {
+                    Cursor.visible = false;
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
+                Panel.SetActive(!isActive);
+            }
+        }
+
+        public void closePanel()
+        {
+            if (Panel != null)
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                Panel.SetActive(false);
+            }
+        }
+
+        public void OnTriggerEnter(Collider Player)
+        {
+            if (Player.CompareTag("Player"))
             {
                 triggerActive = true;
             }
         }
  
-        public void OnTriggerExit(Collider other)
+        public void OnTriggerExit(Collider Player)
         {
-            if (other.CompareTag("Player"))
+            if (Player.CompareTag("Player"))
             {
                 triggerActive = false;
             }
@@ -24,14 +55,14 @@ public class TriggerDialog : MonoBehaviour
  
         private void Update()
         {
-            if (triggerActive && Input.GetKeyDown(KeyCode.Space) )
+            if (triggerActive && Input.GetKeyDown(KeyCode.E))
             {
-                SomeCoolAction();
+                togglePanel();
             }
-        }
- 
-        public void SomeCoolAction()
-        {
-            Debug.Log("lalala");
+
+            if (Panel.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+            {
+                closePanel();
+            }
         }
     }

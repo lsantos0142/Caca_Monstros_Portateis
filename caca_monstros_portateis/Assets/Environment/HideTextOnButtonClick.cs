@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HideTextOnButtonClick : MonoBehaviour
 {
+
     public void onClickButtonYes()
     {
         Score.capturados += 1;
